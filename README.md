@@ -60,10 +60,10 @@ README.md         # diese Datei (Root-Ebene)
 
 ## Wie man dieses Projekt nutzt
 
-1. **Konzept verstehen:** zuerst `6.Mockup/` öffnen (klickbarer Prototyp, zeigt Seitenstruktur und Rollen-/Berechtigungsmodell)
-2. **Formeln & Entscheidungen:** `4.Pflichtenheft/` — dort stehen alle KPI-Definitionen, die Markterschließungs-Formel und die Begründung für die Datenbereinigungs-Entscheidung
-3. **SQL nachvollziehen:** `3.SQL/` — jede View liegt zweimal vor: einmal ohne Kommentare (copy-paste-fertig), einmal zeilenweise mit `#`-Kommentaren erklärt
-4. **Dashboard:** Zugriff auf das Live-Dashboard in Looker Studio nur mit Berechtigung — Screenshots in `2.Images/` und in der Präsentation
+1. **Konzept verstehen:** zuerst `Mockup/` öffnen (klickbarer Prototyp, zeigt Seitenstruktur und Rollen-/Berechtigungsmodell)
+2. **Formeln & Entscheidungen:** `Pflichtenheft/` — dort stehen alle KPI-Definitionen, die Markterschließungs-Formel und die Begründung für die Datenbereinigungs-Entscheidung
+3. **SQL nachvollziehen:** `SQL/` — jede View liegt zweimal vor: einmal ohne Kommentare (copy-paste-fertig), einmal zeilenweise mit `#`-Kommentaren erklärt
+4. **Dashboard:** Zugriff auf das Live-Dashboard in Looker Studio nur mit Berechtigung — Screenshots in `Images/` und in der Präsentation
 5. Keine Einrichtung nötig außer BigQuery-Zugriff auf die vier Rohdaten-Tabellen
 
 ## Zukünftige Arbeiten
