@@ -8,7 +8,8 @@ Management-Dashboard für **GoExplore** (internationaler Einzelhändler für Cam
 
 📊 [Präsentation](5.Praesentation/) · 📄 [Pflichtenheft](https://github.com/Mathias-Stumpf2026/Management-Dashboard-fuer-GoExplore/blob/main/Projekt/Projekt_GoExplore_Pflichtenheft_Kapitel_8_final%20(1).docx) · 🧩 [SQL-Views](https://github.com/Mathias-Stumpf2026/Management-Dashboard-fuer-GoExplore/blob/main/Projekt/Projekt_GoExplore_Pflichtenheft_Kapitel_8_final%20(1).docx) · 🖥️ [Interaktives Mockup]([6.Mockup/](https://github.com/Mathias-Stumpf2026/Management-Dashboard-fuer-GoExplore/blob/main/GoExplore_Dashboard_Mockup_8_V2%20(2).html))
 
-Dieses Projekt entstand als Gruppenarbeit (Team: Zubaida, Tim, Mathias) im Rahmen des WBS-Kurses Data Science & AI; dieses Repository dokumentiert die gemeinsame Ausarbeitung.
+Dieses Projekt entstand als Gruppenarbeit (Team: Zubaida, Tim, Mathias) 
+im Rahmen des WBS-Kurses Data Science & AI; dieses Repository dokumentiert die gemeinsame Ausarbeitung.
 
 ## Projektübersicht
 
