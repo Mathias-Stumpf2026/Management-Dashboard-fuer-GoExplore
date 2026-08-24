@@ -43,7 +43,7 @@ GoExplore plant den Markteintritt in vier neue europäische Länder und braucht 
 [Markterschließung: BIP-skalierte 3-Jahres-Prognose](https://github.com/Mathias-Stumpf2026/Management-Dashboard-fuer-GoExplore/blob/main/Images%204/markterschliessung_prognose.png)
 *Prognostizierter Zielumsatz je Land für die Jahre 1–3 (30/60/100 % der Lücke zum Benchmark-Land) — aktueller Ist-Umsatz noch bei 0, da der Markteintritt noch nicht erfolgt ist.*
 
-![Retailer Connections: Fachgeschäfte vs. allgemeine Geschäfte](2.Images/retailer_connections.png)
+![Retailer Connections: Fachgeschäfte vs. allgemeine Geschäfte](https://github.com/Mathias-Stumpf2026/Management-Dashboard-fuer-GoExplore/blob/main/Images%204/retailer_connections.png)
 *Top-5-Händler, Umsatz nach Land und Rabatt-/Warenkorbwert je Händlertyp — Basis für die Fachgeschäft-vs-allgemein-Analyse.*
 
 ## Repository-Struktur
