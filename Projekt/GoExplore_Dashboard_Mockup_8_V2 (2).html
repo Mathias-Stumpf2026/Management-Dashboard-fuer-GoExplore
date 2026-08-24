@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoExplore — Dashboard-Konzept (Mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B2545;
+    --navy-2:#132C52;
+    --bg:#F4F6F9;
+    --card:#FFFFFF;
+    --border:#E2E6ED;
+    --text:#1A2332;
+    --text-2:#5B6472;
+    --accent:#2E6E9E;
+    --accent-soft:#2E6E9E14;
+    --positive:#1E5631;
+    --positive-soft:#1E56311a;
+    --negative:#B3261E;
+    --negative-soft:#B3261E1a;
+    --locked:#92702B;
+    --locked-soft:#92702B14;
+    --admin:#5B4B8A;
+    --admin-soft:#5B4B8A14;
+    --warning:#92702B;
+    --warning-soft:#92702B1a;
+    --inactive:#5B6472;
+    --inactive-soft:#5B647214;
+    --radius:10px;
+    --shadow:0 1px 2px rgba(16,24,40,.04), 0 1px 3px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:14px;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.disp{font-family:'IBM Plex Sans',sans-serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  /* ---------- top notice ---------- */
+  .notice{background:var(--navy);color:#CFE0F0;font-size:12.5px;padding:9px 20px;display:flex;gap:10px;align-items:center;justify-content:center;text-align:center;line-height:1.5;}
+  .notice b{color:#fff;}
+
+  /* ---------- app shell ---------- */
+  .app{display:flex;min-height:calc(100vh - 38px);}
+
+  /* sidebar */
+  .sidebar{width:250px;flex:none;background:var(--navy);color:#D7E2EF;display:flex;flex-direction:column;padding:18px 14px;}
+  .brand{display:flex;align-items:center;gap:10px;padding:6px 8px 20px;border-bottom:1px solid #1D3A63;margin-bottom:16px;}
+  .brand-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#3E86BE,#0B2545);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono';font-weight:600;color:#fff;font-size:13px;}
+  .brand-name{font-family:'IBM Plex Sans';font-weight:600;color:#fff;font-size:15px;}
+  .brand-sub{font-size:10.5px;color:#8CA3BE;letter-spacing:.03em;}
+
+  .nav-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:#6C87A6;margin:14px 8px 6px;font-weight:600;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;color:#C4D4E6;font-size:13.5px;margin-bottom:2px;position:relative;transition:background .12s;}
+  .nav-item:hover{background:#15304F;}
+  .nav-item.active{background:#1B3A5F;color:#fff;}
+  .nav-item.active::before{content:"";position:absolute;left:-14px;top:8px;bottom:8px;width:3px;background:var(--accent);border-radius:2px;}
+  .nav-icon{width:17px;text-align:center;font-size:14px;opacity:.9;}
+  .nav-lock{margin-left:auto;font-size:11px;color:#7A93B0;}
+  .nav-item.locked{color:#5E7691;cursor:not-allowed;}
+  .nav-item.locked:hover{background:transparent;}
+  .nav-item.locked .nav-lock{color:var(--locked);}
+  .nav-item.planned{border:1px dashed #3E5B82;color:#8CA3BE;cursor:pointer;}
+  .nav-item.planned .nav-lock{color:#8CA3BE;font-size:10px;font-family:'IBM Plex Mono';}
+  .roadmap-banner{background:var(--warning-soft);border:1px solid var(--warning);border-left:4px solid var(--warning);border-radius:var(--radius);padding:12px 16px;margin-bottom:18px;font-size:13px;color:#5C4718;display:flex;gap:10px;align-items:flex-start;}
+  .roadmap-banner b{color:#3D3110;}
+
+  .sidebar-foot{margin-top:auto;padding-top:14px;border-top:1px solid #1D3A63;font-size:11px;color:#7A93B0;line-height:1.5;}
+
+  /* main */
+  .main{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .topbar{background:var(--card);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:16px;justify-content:space-between;flex-wrap:wrap;}
+  .crumb{font-size:13px;color:var(--text-2);}
+  .crumb b{color:var(--text);font-weight:600;}
+  .top-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+
+  .role-picker{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:5px 6px;}
+  .role-picker span.rp-label{font-size:11px;color:var(--text-2);padding-left:4px;white-space:nowrap;}
+  .role-btn{border:none;background:transparent;font-family:'Inter';font-size:12px;padding:5px 9px;border-radius:6px;cursor:pointer;color:var(--text-2);white-space:nowrap;}
+  .role-btn.active{background:var(--navy);color:#fff;}
+
+  .lang-toggle{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .lang-toggle button{border:none;background:var(--card);font-family:'IBM Plex Mono';font-size:11.5px;font-weight:600;padding:7px 10px;cursor:pointer;color:var(--text-2);}
+  .lang-toggle button.active{background:var(--navy);color:#fff;}
+
+  .content{padding:24px;flex:1;}
+  .view{display:none;}
+  .view.active{display:block;}
+
+  /* headings */
+  .page-head{margin-bottom:18px;}
+  .page-head h1{font-size:21px;margin:0 0 4px;font-weight:600;}
+  .page-head p{margin:0;color:var(--text-2);font-size:13px;}
+
+  /* KPI cards */
+  .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px;}
+  .kpi-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 16px 14px;box-shadow:var(--shadow);}
+  .kpi-card .kpi-label{font-size:11.5px;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;}
+  .kpi-card .kpi-value{font-family:'IBM Plex Mono';font-size:24px;font-weight:600;margin-bottom:8px;}
+
+  .badge{display:inline-flex;align-items:center;gap:5px;font-family:'IBM Plex Mono';font-size:11.5px;font-weight:600;padding:3px 8px 3px 7px;border-radius:6px;}
+  .badge.positive{color:var(--positive);background:var(--positive-soft);border-left:3px solid var(--positive);}
+  .badge.negative{color:var(--negative);background:var(--negative-soft);border-left:3px solid var(--negative);}
+
+  /* filter bar */
+  .filter-bar{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:18px;}
+  .filter-bar .fb-label{font-size:11.5px;color:var(--text-2);font-weight:600;margin-right:2px;}
+  .chip-select{font-family:'Inter';font-size:12px;border:1px solid var(--border);background:var(--bg);border-radius:7px;padding:6px 10px;color:var(--text);cursor:pointer;}
+  .chip-select:focus{outline:2px solid var(--accent);outline-offset:1px;}
+
+  /* panels row */
+  .panel-row{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-bottom:18px;}
+  @media(max-width:900px){.panel-row{grid-template-columns:1fr;}}
+  .panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);}
+  .panel h3{font-size:13px;margin:0 0 12px;font-weight:600;display:flex;align-items:center;justify-content:space-between;}
+  .panel h3 span.tag{font-size:10px;color:var(--text-2);font-weight:500;background:var(--bg);padding:2px 7px;border-radius:5px;}
+
+  /* table */
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th{text-align:left;color:var(--text-2);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.03em;padding:7px 8px;border-bottom:1px solid var(--border);}
+  td{padding:8px 8px;border-bottom:1px solid #EFF1F5;}
+  tr:last-child td{border-bottom:none;}
+
+  /* tile grid (Grundseite) */
+  .tile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+  .tile{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);cursor:pointer;transition:transform .1s, box-shadow .1s;position:relative;}
+  .tile:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(16,24,40,.09);}
+  .tile.locked{cursor:not-allowed;opacity:.55;}
+  .tile.locked:hover{transform:none;box-shadow:var(--shadow);}
+  .tile .t-icon{width:34px;height:34px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:10px;}
+  .tile.admin .t-icon{background:var(--admin-soft);color:var(--admin);}
+  .tile h4{margin:0 0 4px;font-size:14px;font-weight:600;}
+  .tile p{margin:0;font-size:12px;color:var(--text-2);line-height:1.4;}
+  .tile .t-lock{position:absolute;top:14px;right:14px;font-size:13px;color:var(--locked);}
+
+  /* admin grid */
+  .admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-bottom:18px;}
+  .admin-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:15px;box-shadow:var(--shadow);}
+  .admin-card .a-icon{width:30px;height:30px;border-radius:7px;background:var(--admin-soft);color:var(--admin);display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:9px;}
+  .admin-card h4{margin:0 0 4px;font-size:13px;font-weight:600;}
+  .admin-card p{margin:0 0 10px;font-size:11.5px;color:var(--text-2);line-height:1.4;}
+  .status-dot{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;}
+  .status-dot::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--positive);}
+  .status-dot.off::before{background:var(--text-2);}
+
+  /* perm matrix */
+  .perm-table td, .perm-table th{text-align:center;}
+  .perm-table td:first-child, .perm-table th:first-child{text-align:left;}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;}
+  .dot.yes{background:var(--positive);}
+  .dot.no{background:#D8DCE3;}
+
+  /* charts */
+  .chart-note{font-size:10.5px;color:var(--text-2);margin-top:8px;font-style:italic;}
+  svg .gridline{stroke:#EEF1F5;stroke-width:1;}
+  svg .axis-label{font-family:'IBM Plex Mono';font-size:8.5px;fill:var(--text-2);}
+
+  /* legend footer */
+  .legend{display:flex;gap:22px;flex-wrap:wrap;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-top:6px;font-size:12px;color:var(--text-2);}
+  .legend .lg-item{display:flex;align-items:center;gap:7px;}
+  .legend .lg-dot{width:11px;height:11px;border-radius:3px;}
+
+  [data-en]{display:none;}
+  body.lang-en [data-de]{display:none;}
+  body.lang-en [data-en]{display:inline;}
+  body.lang-en [data-en-block]{display:block;}
+
+  @media(max-width:760px){
+    .sidebar{position:fixed;left:-260px;height:100%;z-index:20;transition:left .2s;}
+    .app{flex-direction:column;}
+  }
+</style>
+</head>
+<body data-role="admin">
+
+<div class="notice">
+  <span><b data-de>Konzept-Mockup</b><b data-en>Concept mockup</b> — <span data-de>klicken Sie oben rechts durch die Rollen und den Sprachschalter, um Navigation & Berechtigungen zu testen. Zahlen sind illustrativ.</span><span data-en>use the role switcher and language toggle top-right to test navigation & permissions. Figures are illustrative.</span></span>
+</div>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">GX</div>
+      <div>
+        <div class="brand-name">GoExplore</div>
+        <div class="brand-sub mono" data-de>MANAGEMENT DASHBOARD</div>
+        <div class="brand-sub mono" data-en>MANAGEMENT DASHBOARD</div>
+      </div>
+    </div>
+
+    <div class="nav-label" data-de>Übersicht</div>
+    <div class="nav-label" data-en>Overview</div>
+    <div class="nav-item active" data-goto="grund" onclick="goto('grund')">
+      <span class="nav-icon">⌂</span><span data-de>Grundseite</span><span data-en>Home</span>
+    </div>
+
+    <div class="nav-label" data-de>Fachbereiche</div>
+    <div class="nav-label" data-en>Departments</div>
+    <div class="nav-item" data-goto="finance" data-requires="finance" onclick="goto('finance')">
+      <span class="nav-icon">€</span><span data-de>Finance / CEO</span><span data-en>Finance / CEO</span>
+      <span class="nav-lock">🔒</span>
+    </div>
+    <div class="nav-item locked" data-goto="marketing" data-requires="marketing" onclick="goto('marketing')">
+      <span class="nav-icon">◆</span><span data-de>Marketing</span><span data-en>Marketing</span>
+      <span class="nav-lock">🔒</span>
+    </div>
+    <div class="nav-item locked" data-goto="retailer" data-requires="retailer" onclick="goto('retailer')">
+      <span class="nav-icon">▤</span><span data-de>Retailer Connections</span><span data-en>Retailer Connections</span>
+      <span class="nav-lock">🔒</span>
+    </div>
+
+    <div class="nav-label" data-de>System</div>
+    <div class="nav-label" data-en>System</div>
+    <div class="nav-item" data-goto="admin" data-requires="admin" onclick="goto('admin')">
+      <span class="nav-icon">⚙</span><span data-de>Administration</span><span data-en>Administration</span>
+      <span class="nav-lock">🔒</span>
+    </div>
+
+    <div class="nav-label" data-de>Roadmap</div>
+    <div class="nav-label" data-en>Roadmap</div>
+    <div class="nav-item planned" data-goto="bizops" onclick="goto('bizops')">
+      <span class="nav-icon">◈</span><span data-de>Business Operations</span><span data-en>Business Operations</span>
+      <span class="nav-lock" data-de>geplant</span><span class="nav-lock" data-en>planned</span>
+    </div>
+
+    <div class="sidebar-foot">
+      <span data-de>Letzte Aktualisierung: heute 06:02 Uhr · via API</span>
+      <span data-en>Last update: today 06:02 AM · via API</span>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="crumb"><span data-de>GoExplore</span><span data-en>GoExplore</span> / <b id="crumb-current" data-de>Grundseite</b><b data-en style="display:none" id="crumb-current-en">Home</b></div>
+      <div class="top-controls">
+        <div class="role-picker">
+          <span class="rp-label" data-de>Rollenvorschau:</span>
+          <span class="rp-label" data-en>Role preview:</span>
+          <button class="role-btn active" onclick="setRole('admin',this)" data-de>Administration</button>
+          <button class="role-btn active" onclick="setRole('admin',this)" data-en style="display:none">Administration</button>
+          <button class="role-btn" onclick="setRole('ceo',this)" data-de>CEO/CFO</button>
+          <button class="role-btn" onclick="setRole('ceo',this)" data-en style="display:none">CEO/CFO</button>
+          <button class="role-btn" onclick="setRole('marketing',this)" data-de>Marketing</button>
+          <button class="role-btn" onclick="setRole('marketing',this)" data-en style="display:none">Marketing</button>
+          <button class="role-btn" onclick="setRole('retailer',this)" data-de>Retailer Conn.</button>
+          <button class="role-btn" onclick="setRole('retailer',this)" data-en style="display:none">Retailer Conn.</button>
+          <button class="role-btn" onclick="setRole('mitarbeiter',this)" data-de>Mitarbeitend</button>
+          <button class="role-btn" onclick="setRole('mitarbeiter',this)" data-en style="display:none">Employee</button>
+        </div>
+        <div class="lang-toggle">
+          <button id="btn-de" class="active" onclick="setLang('de')">DE</button>
+          <button id="btn-en" onclick="setLang('en')">EN</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ============ VIEW: GRUNDSEITE ============ -->
+      <section class="view active" id="view-grund">
+        <div class="page-head">
+          <h1 data-de>Grundseite</h1><h1 data-en style="display:none">Home</h1>
+          <p data-de>Allgemeine Kennzahlen für alle Mitarbeitenden — ohne Umsatz- oder Gewinnbezug.</p>
+          <p data-en style="display:none">Company-wide metrics for all employees — no revenue or profit figures.</p>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Kundenzufriedenheit (NPS)</div>
+            <div class="kpi-label" data-en>Customer satisfaction (NPS)</div>
+            <div class="kpi-value">— <span style="font-size:12px;color:var(--text-2);font-family:Inter;">/ 100</span></div>
+            <span class="badge" style="color:var(--locked);background:var(--locked-soft);border-left-color:var(--locked)" data-de>Datenquelle folgt (CRM-API)</span>
+            <span class="badge" style="color:var(--locked);background:var(--locked-soft);border-left-color:var(--locked)" data-en>Data source pending (CRM API)</span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Bestellvolumen (Trend)</div>
+            <div class="kpi-label" data-en>Order volume (trend)</div>
+            <div class="kpi-value">3.550 <span style="font-size:11px;color:var(--text-2);font-family:Inter;" data-de>Bestellungen/Mon.</span><span style="font-size:11px;color:var(--text-2);font-family:Inter;" data-en>orders/mo.</span></div>
+            <span class="badge positive">▲ +8,3%</span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Aktive Länder</div>
+            <div class="kpi-label" data-en>Active markets</div>
+            <div class="kpi-value">21 <span style="font-size:11px;color:var(--text-2);font-family:Inter;">+ 4 <span data-de>geplant</span><span data-en>planned</span></span></div>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-de>CZ · NO · PL · PT in Vorbereitung</span>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-en>CZ · NO · PL · PT in preparation</span>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-bottom:18px;">
+          <h3><span data-de>Kernfragen dieses Dashboards</span><span data-en>Key questions this dashboard answers</span></h3>
+          <table>
+            <tr><th data-de>Fachbereich</th><th data-en>Department</th><th data-de>Leitfrage</th><th data-en>Key question</th></tr>
+            <tr><td data-de>CEO / CFO</td><td data-en>CEO / CFO</td><td data-de>Wie entwickeln sich Umsatz, Gewinn und Marge — und wo drohen Verluste?</td><td data-en>How are revenue, profit and margin trending — and where is a loss forming?</td></tr>
+            <tr><td data-de>Markterschließung</td><td data-en>Market expansion</td><td data-de>Wie viel Umsatzpotenzial haben Polen, Norwegen, Tschechien und Portugal, und erreichen sie ihr Ziel?</td><td data-en>How much revenue potential do Poland, Norway, Czech Republic and Portugal have, and are they on target?</td></tr>
+            <tr><td data-de>Retailer Connections</td><td data-en>Retailer Connections</td><td data-de>Fachgeschäfte vs. allgemeine Geschäfte — wer ist wertvoller, wer braucht Aufmerksamkeit?</td><td data-en>Specialty vs. general retailers — who is more valuable, who needs attention?</td></tr>
+            <tr><td data-de>Marketing</td><td data-en>Marketing</td><td data-de>Welche Bestellmethoden und Produktlinien performen am besten?</td><td data-en>Which order methods and product lines perform best?</td></tr>
+          </table>
+          <div class="chart-note" data-de>Beantwortet auf den jeweiligen Fachbereichsseiten (🔒 Rollenberechtigung erforderlich).</div>
+          <div class="chart-note" data-en>Answered on the respective department pages (🔒 role permission required).</div>
+        </div>
+
+        <div class="page-head" style="margin-top:8px;">
+          <h3 style="margin:0 0 2px;font-size:14px;" data-de>Fachbereiche & Systembereiche</h3>
+          <h3 style="margin:0 0 2px;font-size:14px;" data-en>Departments & system area</h3>
+          <p data-de>Sichtbar für alle · Zugriff nur mit passender Rollenberechtigung (Schloss-Symbol = gesperrt).</p>
+          <p data-en>Visible to everyone · access requires the matching role (lock icon = restricted).</p>
+        </div>
+
+        <div class="tile-grid" id="tile-grid">
+          <div class="tile" data-req="finance" onclick="goto('finance')">
+            <span class="t-lock">🔒</span>
+            <div class="t-icon">€</div>
+            <h4 data-de>Finance / CEO</h4><h4 data-en>Finance / CEO</h4>
+            <p data-de>Umsatz, Gewinn, Marge, Rabatt-Quote gesamt</p>
+            <p data-en>Revenue, profit, margin, overall discount rate</p>
+          </div>
+          <div class="tile" data-req="marketing" onclick="goto('marketing')">
+            <span class="t-lock">🔒</span>
+            <div class="t-icon">◆</div>
+            <h4 data-de>Marketing</h4><h4 data-en>Marketing</h4>
+            <p data-de>Umsatz nach Bestellmethode & Produktlinie, Kundenzufriedenheit</p>
+            <p data-en>Revenue by order method & product line, satisfaction</p>
+          </div>
+          <div class="tile" data-req="retailer" onclick="goto('retailer')">
+            <span class="t-lock">🔒</span>
+            <div class="t-icon">▤</div>
+            <h4 data-de>Retailer Connections</h4><h4 data-en>Retailer Connections</h4>
+            <p data-de>Fachgeschäfte vs. allgemeine Geschäfte, Top-5-Händler</p>
+            <p data-en>Specialty vs. general retailers, top 5 accounts</p>
+          </div>
+          <div class="tile admin" data-req="admin" onclick="goto('admin')">
+            <span class="t-lock">🔒</span>
+            <div class="t-icon">⚙</div>
+            <h4 data-de>Administration</h4><h4 data-en>Administration</h4>
+            <p data-de>Datenimport, API/ERP-Anbindung, Benutzerverwaltung</p>
+            <p data-en>Data import, API/ERP connections, user management</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ VIEW: FACHBEREICH (FINANCE/CEO) ============ -->
+      <section class="view" id="view-finance">
+        <div class="page-head">
+          <h1 data-de>Finance / CEO</h1><h1 data-en style="display:none">Finance / CEO</h1>
+          <p data-de>Umsatz-, Gewinn- und Rabattkennzahlen — sichtbar für CEO, CFO und Finance.</p>
+          <p data-en style="display:none">Revenue, profit and discount metrics — visible to CEO, CFO and Finance.</p>
+        </div>
+
+        <div class="panel" style="border-left:4px solid var(--negative);margin-bottom:18px;">
+          <h3><span data-de>⚠ Wichtigste Hinweise (Montagmorgen)</span><span data-en>⚠ Key alerts (Monday morning)</span><span class="tag" data-de>Automatische Ampel</span><span class="tag" data-en>Automatic threshold</span></h3>
+          <table>
+            <tr><th data-de>Hinweis</th><th data-en>Alert</th><th data-de>Betrifft</th><th data-en>Affects</th><th data-de>Status</th><th data-en>Status</th></tr>
+            <tr>
+              <td data-de>Bruttogewinn negativ</td><td data-en>Negative gross profit</td>
+              <td data-de>Germany — Golf-Shop-Segment, Q4</td><td data-en>Germany — golf shop segment, Q4</td>
+              <td><span class="badge negative">🔴 <span data-de>Verlust</span><span data-en>Loss</span></span></td>
+            </tr>
+            <tr>
+              <td data-de>Rabatt-Quote über Schwelle (&gt; 10%)</td><td data-en>Discount rate above threshold (&gt; 10%)</td>
+              <td data-de>Germany — Golf-Shop; Korea — Sport-Shop</td><td data-en>Germany — golf shop; Korea — sports store</td>
+              <td><span class="badge negative">🔴 <span data-de>Prüfen</span><span data-en>Review</span></span></td>
+            </tr>
+            <tr>
+              <td data-de>Zielerreichung neue Länder</td><td data-en>New-market target achievement</td>
+              <td>Poland, Norway, Czech Republic, Portugal</td>
+              <td><span class="badge" style="color:var(--inactive);background:var(--inactive-soft);border-left-color:var(--inactive)">⚪ <span data-de>Noch nicht aktiv</span><span data-en>Not yet active</span></span></td>
+            </tr>
+          </table>
+          <div class="chart-note" data-de>Illustrativ · Quelle: CEO_CFO – Warnschwellen Ampel (Pflichtenheft Kap. 2.9.10). Rot = Bruttogewinn &lt; 0 oder Rabatt-Quote &gt; 10 %. Die Ampel für PL/NO/CZ/PT wird automatisch scharf (Grün/Gelb/Rot vs. Prognose), sobald erste Verkäufe aus diesen Ländern vorliegen.</div>
+          <div class="chart-note" data-en>Illustrative · source: CEO_CFO – warning traffic light (spec ch. 2.9.10). Red = gross profit &lt; 0 or discount rate &gt; 10%. The traffic light for PL/NO/CZ/PT activates automatically (green/yellow/red vs. forecast) once first sales from those countries arrive.</div>
+        </div>
+
+        <div class="filter-bar">
+          <span class="fb-label" data-de>Filter:</span><span class="fb-label" data-en>Filters:</span>
+          <select class="chip-select"><option data-de>Land: Alle</option><option data-en>Country: All</option></select>
+          <select class="chip-select"><option data-de>Händler-Typ: Alle</option><option data-en>Retailer type: All</option></select>
+          <select class="chip-select"><option data-de>Bestellmethode: Alle</option><option data-en>Order method: All</option></select>
+          <select class="chip-select"><option data-de>Wochentag: Alle</option><option data-en>Weekday: All</option></select>
+          <select class="chip-select"><option data-de>Tag: Alle</option><option data-en>Day: All</option></select>
+          <select class="chip-select"><option data-de>Monat: Alle</option><option data-en>Month: All</option></select>
+          <select class="chip-select"><option data-de>Quartal: Alle</option><option data-en>Quarter: All</option></select>
+          <select class="chip-select"><option>Jahr: 2015–2018</option></select>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Netto-Umsatz</div><div class="kpi-label" data-en>Net revenue</div>
+            <div class="kpi-value">1,25 Mrd. €</div>
+            <span class="badge positive">▲ +11,2%</span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Bruttogewinn</div><div class="kpi-label" data-en>Gross profit</div>
+            <div class="kpi-value">527,7 Mio. €</div>
+            <span class="badge positive">▲ +6,4%</span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Marge %</div><div class="kpi-label" data-en>Margin %</div>
+            <div class="kpi-value">42,2%</div>
+            <span class="badge negative">▼ −1,1 pp</span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Rabatt-Quote</div><div class="kpi-label" data-en>Discount rate</div>
+            <div class="kpi-value">5,0%</div>
+            <span class="badge negative">▼ +0,4 pp <span data-de>ggü. Vorjahr</span><span data-en>vs. prior yr</span></span>
+          </div>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Aufschlagsfaktor</div><div class="kpi-label" data-en>Markup factor</div>
+            <div class="kpi-value">1,73×</div>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-de>Netto-Umsatz / Gesamtkosten</span>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-en>Net revenue / total cost</span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Umsatzeffizienz (Kosten-Nutzen)</div><div class="kpi-label" data-en>Revenue efficiency (cost-to-revenue)</div>
+            <div class="kpi-value">0,58</div>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-de>58 Cent Kosten je 1 € Umsatz</span>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-en>58 cents cost per €1 revenue</span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Umsatz pro Händler</div><div class="kpi-label" data-en>Revenue per retailer</div>
+            <div class="kpi-value">4,33 Mio. €</div>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-de>289 aktive Händler</span>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-en>289 active retailers</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3><span data-de>Markterschließung — 3-Jahres-Zielumsatz neue Länder</span><span data-en>Market expansion — 3-year revenue target, new markets</span><span class="tag" data-de>Benchmark × BIP-Skalierung</span><span class="tag" data-en>Benchmark × GDP scaling</span></h3>
+          <table>
+            <tr><th data-de>Zielland</th><th data-en>Target market</th><th data-de>Benchmark</th><th data-en>Benchmark</th><th data-de>Skalierungsfaktor</th><th data-en>Scaling factor</th><th data-de>Jahr 1 (30%)</th><th data-en>Year 1 (30%)</th><th data-de>Jahr 2 (60%)</th><th data-en>Year 2 (60%)</th><th data-de>Jahr 3 (100%)</th><th data-en>Year 3 (100%)</th></tr>
+            <tr><td data-de>Polen</td><td data-en>Poland</td><td>Spain</td><td class="mono">0,754</td><td class="mono">3,998 Mio. €</td><td class="mono">7,997 Mio. €</td><td class="mono">13,329 Mio. €</td></tr>
+            <tr><td data-de>Norwegen</td><td data-en>Norway</td><td>Sweden</td><td class="mono">1,269</td><td class="mono">2,705 Mio. €</td><td class="mono">5,409 Mio. €</td><td class="mono">9,015 Mio. €</td></tr>
+            <tr><td data-de>Tschechien</td><td data-en>Czech Republic</td><td>Austria</td><td class="mono">0,587</td><td class="mono">1,903 Mio. €</td><td class="mono">3,807 Mio. €</td><td class="mono">6,345 Mio. €</td></tr>
+            <tr><td>Portugal</td><td>Portugal</td><td>Finland</td><td class="mono">0,589</td><td class="mono">2,035 Mio. €</td><td class="mono">4,070 Mio. €</td><td class="mono">6,783 Mio. €</td></tr>
+          </table>
+          <div class="chart-note" data-de>Formel: Ziel-Umsatz(Land, Jahr) = Netto-Umsatz Benchmark-Land im Referenzjahr 2017 × (BIP pro Kopf Zielland / BIP pro Kopf Benchmark) × Stufenfaktor (Jahr 1 = 30 %, Jahr 2 = 60 %, Jahr 3 = 100 % der Lücke zum Benchmark). Referenzjahr = 2017, da BIP pro Kopf eine Ein-Jahres-Kennzahl ist. Ist-Umsatz/Zielerreichung je Jahr zeigen aktuell 0 %, solange keine echten Verkäufe in den 4 Ländern vorliegen.</div>
+          <div class="chart-note" data-en>Formula: target revenue(country, year) = net revenue of benchmark country (full period) × (GDP per capita target ÷ GDP per capita benchmark) × step factor (year 1 = 30%, year 2 = 60%, year 3 = 100% of the gap to benchmark). Year 2/3 GDP values are updated manually each year — until then the year-1 value is used as a placeholder.</div>
+        </div>
+
+        <div class="panel-row">
+          <div class="panel">
+            <h3><span data-de>Umsatzentwicklung & Forecast</span><span data-en>Revenue trend & forecast</span><span class="tag" data-de>Liniendiagramm</span><span class="tag" data-en>Line chart</span></h3>
+            <svg viewBox="0 0 560 190" width="100%" height="190">
+              <line x1="30" y1="20" x2="30" y2="160" class="gridline"/>
+              <line x1="30" y1="160" x2="540" y2="160" class="gridline"/>
+              <line x1="30" y1="100" x2="540" y2="100" class="gridline"/>
+              <line x1="30" y1="40" x2="540" y2="40" class="gridline"/>
+              <polyline points="30,140 120,120 210,100 300,95 390,70 480,55 540,40" fill="none" stroke="#2E6E9E" stroke-width="2.5"/>
+              <polyline points="480,55 540,40 560,28" fill="none" stroke="#2E6E9E" stroke-width="2" stroke-dasharray="4 4" opacity=".55"/>
+              <circle cx="540" cy="40" r="3.5" fill="#2E6E9E"/>
+              <text x="30" y="176" class="axis-label">2015</text>
+              <text x="255" y="176" class="axis-label">2016–17</text>
+              <text x="500" y="176" class="axis-label">2018</text>
+              <text x="546" y="24" class="axis-label" fill="#2E6E9E" data-de>Forecast</text>
+            </svg>
+            <div class="chart-note" data-de>Illustrativ · reale Werte aus Net Revenue je Monat, gestrichelt = Prognose (3 Jahre)</div>
+            <div class="chart-note" data-en>Illustrative · real values from Net Revenue per month, dashed = forecast (3 years)</div>
+          </div>
+          <div class="panel">
+            <h3><span data-de>Brutto vs. Netto</span><span data-en>Gross vs. net</span><span class="tag" data-de>Balken</span><span class="tag" data-en>Bar</span></h3>
+            <svg viewBox="0 0 260 190" width="100%" height="190">
+              <line x1="30" y1="160" x2="240" y2="160" class="gridline"/>
+              <rect x="45" y="45" width="26" height="115" fill="#2E6E9E" opacity=".85" rx="2"/>
+              <rect x="80" y="58" width="26" height="102" fill="#1E5631" opacity=".85" rx="2"/>
+              <rect x="130" y="50" width="26" height="110" fill="#2E6E9E" opacity=".85" rx="2"/>
+              <rect x="165" y="66" width="26" height="94" fill="#1E5631" opacity=".85" rx="2"/>
+              <text x="45" y="174" class="axis-label">Q1</text>
+              <text x="130" y="174" class="axis-label">Q2</text>
+              <text x="200" y="45" class="axis-label" fill="#2E6E9E">■ <tspan data-de>Brutto</tspan><tspan data-en>Gross</tspan></text>
+              <text x="200" y="58" class="axis-label" fill="#1E5631">■ <tspan data-de>Netto</tspan><tspan data-en>Net</tspan></text>
+            </svg>
+            <div class="chart-note" data-de>Illustrativ · Differenz = Total Discount</div>
+            <div class="chart-note" data-en>Illustrative · gap = total discount</div>
+          </div>
+        </div>
+
+        <div class="panel-row">
+          <div class="panel">
+            <h3><span data-de>Rabatt-Analyse je Land & Händlertyp</span><span data-en>Discount analysis by country & retailer type</span><span class="tag" data-de>Ampel &gt; 10%</span><span class="tag" data-en>Threshold &gt; 10%</span></h3>
+            <table>
+              <tr><th data-de>Land</th><th data-en>Country</th><th data-de>Händler-Typ</th><th data-en>Retailer type</th><th data-de>Rabatt-Quote</th><th data-en>Discount rate</th></tr>
+              <tr><td>Germany</td><td data-de>Golf-Shop</td><td data-en>Golf shop</td><td><span class="badge negative">12,4%</span></td></tr>
+              <tr><td>USA</td><td data-de>Warenhaus</td><td data-en>Department store</td><td><span class="badge positive">5,1%</span></td></tr>
+              <tr><td>UK</td><td data-de>Outdoor-Shop</td><td data-en>Outdoors shop</td><td><span class="badge positive">4,3%</span></td></tr>
+              <tr><td>Korea</td><td data-de>Sport-Shop</td><td data-en>Sports store</td><td><span class="badge negative">11,0%</span></td></tr>
+            </table>
+            <div class="chart-note" data-de>Rot = Rabatt-Quote &gt; 10 % (Ampel-Schwelle It. Pflichtenheft 2.3.3)</div>
+            <div class="chart-note" data-en>Red = discount rate &gt; 10% (threshold per requirements spec 2.3.3)</div>
+          </div>
+          <div class="panel">
+            <h3><span data-de>Marktanteil je Land</span><span data-en>Market share by country</span><span class="tag" data-de>Netto-Umsatz</span><span class="tag" data-en>Net revenue</span></h3>
+            <svg viewBox="0 0 260 190" width="100%" height="190">
+              <line x1="30" y1="160" x2="240" y2="160" class="gridline"/>
+              <rect x="35" y="35" width="26" height="125" fill="#2E6E9E" opacity=".85" rx="2"/>
+              <rect x="75" y="70" width="26" height="90" fill="#2E6E9E" opacity=".65" rx="2"/>
+              <rect x="115" y="85" width="26" height="75" fill="#2E6E9E" opacity=".55" rx="2"/>
+              <rect x="155" y="95" width="26" height="65" fill="#2E6E9E" opacity=".45" rx="2"/>
+              <rect x="195" y="120" width="26" height="40" fill="#2E6E9E" opacity=".3" rx="2"/>
+              <text x="35" y="174" class="axis-label">USA</text>
+              <text x="75" y="174" class="axis-label">UK</text>
+              <text x="112" y="174" class="axis-label">DE</text>
+              <text x="152" y="174" class="axis-label">KR</text>
+              <text x="188" y="174" class="axis-label" data-de>Rest</text>
+              <text x="188" y="174" class="axis-label" data-en>Other</text>
+            </svg>
+            <div class="chart-note" data-de>Illustrativ · zeigt Abhängigkeit von Top-Märkten (Klumpenrisiko)</div>
+            <div class="chart-note" data-en>Illustrative · shows dependency on top markets (concentration risk)</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3><span data-de>Detailtabelle (Drill-down)</span><span data-en>Detail table (drill-down)</span></h3>
+          <table>
+            <tr><th data-de>Land</th><th data-en>Country</th><th data-de>Händler-Typ</th><th data-en>Retailer type</th><th data-de>Netto-Umsatz</th><th data-en>Net revenue</th><th data-de>Marge %</th><th data-en>Margin %</th><th data-de>Δ ggü. Vorjahr</th><th data-en>Δ vs. prior yr</th></tr>
+            <tr><td>USA</td><td data-de>Warenhaus</td><td data-en>Department store</td><td class="mono">197,2 Mio. €</td><td class="mono">41,8%</td><td><span class="badge positive">▲ +9,1%</span></td></tr>
+            <tr><td>UK</td><td data-de>Outdoor-Shop</td><td data-en>Outdoors shop</td><td class="mono">107,7 Mio. €</td><td class="mono">43,5%</td><td><span class="badge positive">▲ +4,6%</span></td></tr>
+            <tr><td>Germany</td><td data-de>Golf-Shop</td><td data-en>Golf shop</td><td class="mono">105,3 Mio. €</td><td class="mono">39,2%</td><td><span class="badge negative">▼ −2,3%</span></td></tr>
+            <tr><td>Korea</td><td data-de>Sport-Shop</td><td data-en>Sports store</td><td class="mono">96,2 Mio. €</td><td class="mono">44,0%</td><td><span class="badge positive">▲ +5,8%</span></td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ VIEW: MARKETING ============ -->
+      <section class="view" id="view-marketing">
+        <div class="page-head">
+          <h1 data-de>Marketing</h1><h1 data-en style="display:none">Marketing</h1>
+          <p data-de>Umsatz nach Bestellmethode & Produktlinie — sichtbar für Marketing.</p>
+          <p data-en style="display:none">Revenue by order method & product line — visible to Marketing.</p>
+        </div>
+
+        <div class="filter-bar">
+          <span class="fb-label" data-de>Filter:</span><span class="fb-label" data-en>Filters:</span>
+          <select class="chip-select"><option data-de>Land: Alle</option><option data-en>Country: All</option></select>
+          <select class="chip-select"><option data-de>Produktlinie: Alle</option><option data-en>Product line: All</option></select>
+          <select class="chip-select"><option data-de>Bestellmethode: Alle</option><option data-en>Order method: All</option></select>
+          <select class="chip-select"><option data-de>Tag: Alle</option><option data-en>Day: All</option></select>
+          <select class="chip-select"><option data-de>Monat: Alle</option><option data-en>Month: All</option></select>
+          <select class="chip-select"><option data-de>Quartal: Alle</option><option data-en>Quarter: All</option></select>
+          <select class="chip-select"><option>Jahr: 2015–2018</option></select>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Umsatz Web</div><div class="kpi-label" data-en>Revenue Web</div>
+            <div class="kpi-value">909,6 Mio. €</div>
+            <span class="badge positive">▲ <span data-de>72,7% des Gesamtumsatzes</span><span data-en>72.7% of total revenue</span></span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Umsatz Telefon</div><div class="kpi-label" data-en>Revenue Telephone</div>
+            <div class="kpi-value">157,9 Mio. €</div>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)">12,6%</span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Kundenzufriedenheit</div><div class="kpi-label" data-en>Customer satisfaction</div>
+            <div class="kpi-value">— <span style="font-size:12px;color:var(--text-2);font-family:Inter;">/ 100</span></div>
+            <span class="badge" style="color:var(--locked);background:var(--locked-soft);border-left-color:var(--locked)" data-de>Datenquelle folgt (CRM-API)</span>
+            <span class="badge" style="color:var(--locked);background:var(--locked-soft);border-left-color:var(--locked)" data-en>Data source pending (CRM API)</span>
+          </div>
+        </div>
+
+        <div class="panel-row">
+          <div class="panel">
+            <h3><span data-de>Umsatz nach Bestellmethode</span><span data-en>Revenue by order method</span><span class="tag" data-de>Netto-Umsatz gesamt</span><span class="tag" data-en>Total net revenue</span></h3>
+            <table>
+              <tr><th data-de>Bestellmethode</th><th data-en>Order method</th><th data-de>Netto-Umsatz</th><th data-en>Net revenue</th><th data-de>Anteil</th><th data-en>Share</th></tr>
+              <tr><td>Web</td><td class="mono">909,6 Mio. €</td><td class="mono">72,7%</td></tr>
+              <tr><td data-de>Telefon</td><td data-en>Telephone</td><td class="mono">157,9 Mio. €</td><td class="mono">12,6%</td></tr>
+              <tr><td>E-Mail</td><td class="mono">87,9 Mio. €</td><td class="mono">7,0%</td></tr>
+              <tr><td data-de>Außendienst</td><td data-en>Sales visit</td><td class="mono">68,0 Mio. €</td><td class="mono">5,4%</td></tr>
+              <tr><td>Mail</td><td class="mono">20,8 Mio. €</td><td class="mono">1,7%</td></tr>
+            </table>
+          </div>
+          <div class="panel">
+            <h3><span data-de>Umsatz nach Produktlinie</span><span data-en>Revenue by product line</span><span class="tag" data-de>Trend über Zeit</span><span class="tag" data-en>Trend over time</span></h3>
+            <svg viewBox="0 0 260 190" width="100%" height="190">
+              <line x1="30" y1="20" x2="30" y2="160" class="gridline"/>
+              <line x1="30" y1="160" x2="250" y2="160" class="gridline"/>
+              <polyline points="30,120 90,110 150,90 210,60 250,45" fill="none" stroke="#2E6E9E" stroke-width="2.2"/>
+              <polyline points="30,140 90,138 150,142 210,150 250,155" fill="none" stroke="#1E5631" stroke-width="2.2"/>
+              <polyline points="30,150 90,145 150,130 210,120 250,110" fill="none" stroke="#92702B" stroke-width="2.2"/>
+              <text x="32" y="176" class="axis-label">2015</text>
+              <text x="220" y="176" class="axis-label">2018</text>
+              <text x="180" y="40" class="axis-label" fill="#2E6E9E" data-de>Camping</text>
+              <text x="180" y="40" class="axis-label" fill="#2E6E9E" data-en>Camping</text>
+              <text x="180" y="165" class="axis-label" fill="#1E5631" data-de>Golf</text>
+              <text x="180" y="165" class="axis-label" fill="#1E5631" data-en>Golf</text>
+              <text x="180" y="115" class="axis-label" fill="#92702B" data-de>Outdoor</text>
+              <text x="180" y="115" class="axis-label" fill="#92702B" data-en>Outdoor</text>
+            </svg>
+            <div class="chart-note" data-de>Illustrativ · zeigt wachsende/schrumpfende Produktlinien je Jahr</div>
+            <div class="chart-note" data-en>Illustrative · shows growing/shrinking product lines per year</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3><span data-de>Bestseller-Produkte</span><span data-en>Bestselling products</span><span class="tag" data-de>Top 20 · Netto-Umsatz</span><span class="tag" data-en>Top 20 · net revenue</span></h3>
+          <table>
+            <tr><th data-de>Produkt</th><th data-en>Product</th><th data-de>Produktlinie</th><th data-en>Product line</th><th data-de>Menge</th><th data-en>Quantity</th><th data-de>Netto-Umsatz</th><th data-en>Net revenue</th></tr>
+            <tr><td data-de>TrailKing Zelt 4P</td><td data-en>TrailKing Tent 4P</td><td data-de>Camping</td><td data-en>Camping</td><td class="mono">14.220</td><td class="mono">4,1 Mio. €</td></tr>
+            <tr><td data-de>ProSwing Golfschläger-Set</td><td data-en>ProSwing Golf Club Set</td><td data-de>Golf</td><td data-en>Golf</td><td class="mono">9.870</td><td class="mono">3,6 Mio. €</td></tr>
+            <tr><td data-de>SummitPeak Wanderschuh</td><td data-en>SummitPeak Hiking Boot</td><td data-de>Outdoor</td><td data-en>Outdoor</td><td class="mono">21.040</td><td class="mono">3,2 Mio. €</td></tr>
+            <tr><td colspan="2" style="text-align:center;color:var(--text-2);font-style:italic;" data-de>… 17 weitere (Top-20-Ansicht)</td><td colspan="2" style="text-align:center;color:var(--text-2);font-style:italic;" data-en>… 17 more (top-20 view)</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ VIEW: RETAILER CONNECTIONS ============ -->
+      <section class="view" id="view-retailer">
+        <div class="page-head">
+          <h1 data-de>Retailer Connections</h1><h1 data-en style="display:none">Retailer Connections</h1>
+          <p data-de>Fachgeschäfte vs. allgemeine Geschäfte & Top-Händler — sichtbar für Retailer Connections.</p>
+          <p data-en style="display:none">Specialty vs. general retailers & top accounts — visible to Retailer Connections.</p>
+        </div>
+
+        <div class="filter-bar">
+          <span class="fb-label" data-de>Filter:</span><span class="fb-label" data-en>Filters:</span>
+          <select class="chip-select"><option data-de>Land: Alle</option><option data-en>Country: All</option></select>
+          <select class="chip-select"><option data-de>Händler-Typ: Alle</option><option data-en>Retailer type: All</option></select>
+          <select class="chip-select"><option data-de>Tag: Alle</option><option data-en>Day: All</option></select>
+          <select class="chip-select"><option data-de>Monat: Alle</option><option data-en>Month: All</option></select>
+          <select class="chip-select"><option data-de>Quartal: Alle</option><option data-en>Quarter: All</option></select>
+          <select class="chip-select"><option>Jahr: 2015–2018</option></select>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>AOV Fachgeschäfte</div><div class="kpi-label" data-en>AOV specialty retailers</div>
+            <div class="kpi-value">10.350 €</div>
+            <span class="badge positive">▲ <span data-de>+30% ggü. allgemein</span><span data-en>+30% vs. general</span></span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>AOV allgemeine Geschäfte</div><div class="kpi-label" data-en>AOV general retailers</div>
+            <div class="kpi-value">7.960 €</div>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)">232 <span data-de>Händler</span><span data-en>retailers</span></span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Rabatt-Quote Fachgeschäfte</div><div class="kpi-label" data-en>Discount rate specialty</div>
+            <div class="kpi-value">6,0%</div>
+            <span class="badge negative">▼ <span data-de>höher als allgemein (4,8%)</span><span data-en>higher than general (4.8%)</span></span>
+          </div>
+        </div>
+
+        <div class="panel-row">
+          <div class="panel">
+            <h3><span data-de>Fachgeschäfte vs. allgemeine Geschäfte</span><span data-en>Specialty vs. general retailers</span></h3>
+            <table>
+              <tr><th data-de>Segment</th><th data-en>Segment</th><th data-de>Händler</th><th data-en>Retailers</th><th data-de>AOV</th><th data-en>AOV</th><th data-de>Ø Produktpreis</th><th data-en>Avg. price</th><th data-de>Rabatt-Quote</th><th data-en>Discount rate</th></tr>
+              <tr><td data-de>Fachgeschäft</td><td data-en>Specialty</td><td>57</td><td class="mono">10.350 €</td><td class="mono">110,35 €</td><td><span class="badge negative">6,0%</span></td></tr>
+              <tr><td data-de>Allgemein</td><td data-en>General</td><td>232</td><td class="mono">7.960 €</td><td class="mono">56,44 €</td><td><span class="badge positive">4,8%</span></td></tr>
+            </table>
+          </div>
+          <div class="panel">
+            <h3><span data-de>Top-5-Händler</span><span data-en>Top 5 retailers</span><span class="tag" data-de>Netto-Umsatz</span><span class="tag" data-en>Net revenue</span></h3>
+            <table>
+              <tr><th data-de>Händler</th><th data-en>Retailer</th><th data-de>Land</th><th data-en>Country</th><th data-de>Netto-Umsatz</th><th data-en>Net revenue</th></tr>
+              <tr><td data-de>Berg & Tal Outdoor</td><td data-en>Berg & Tal Outdoor</td><td>Germany</td><td class="mono">18,4 Mio. €</td></tr>
+              <tr><td>Northface Traders</td><td>Northface Traders</td><td>UK</td><td class="mono">16,9 Mio. €</td></tr>
+              <tr><td>Summit Golf Pro</td><td>Summit Golf Pro</td><td>USA</td><td class="mono">15,2 Mio. €</td></tr>
+              <tr><td>Seoul Sports Center</td><td>Seoul Sports Center</td><td>Korea</td><td class="mono">14,7 Mio. €</td></tr>
+              <tr><td>Alpine Gear Co.</td><td>Alpine Gear Co.</td><td>Austria</td><td class="mono">13,1 Mio. €</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3><span data-de>Inaktive Händler</span><span data-en>Inactive retailers</span><span class="tag" data-de>Registriert ohne Bestellung</span><span class="tag" data-en>Registered without orders</span></h3>
+          <table>
+            <tr><th data-de>Kennzahl</th><th data-en>Metric</th><th data-de>Anzahl</th><th data-en>Count</th></tr>
+            <tr><td data-de>Registrierte Händler gesamt</td><td data-en>Total registered retailers</td><td class="mono">562</td></tr>
+            <tr><td data-de>Händler mit mind. 1 Bestellung</td><td data-en>Retailers with ≥1 order</td><td class="mono">289</td></tr>
+            <tr><td data-de>Händler ohne jede Bestellung</td><td data-en>Retailers with no orders</td><td><span class="badge negative">273</span></td></tr>
+          </table>
+          <div class="chart-note" data-de>Handlungsempfehlung: gezielte Reaktivierungs-Kampagne für die 273 inaktiven Händler prüfen</div>
+          <div class="chart-note" data-en>Recommendation: consider a targeted re-activation campaign for the 273 inactive retailers</div>
+        </div>
+      </section>
+
+      <!-- ============ VIEW: ADMIN ============ -->
+      <section class="view" id="view-admin">
+        <div class="page-head">
+          <h1 data-de>Administration</h1><h1 data-en style="display:none">Administration</h1>
+          <p data-de>Sichtbar für die Rolle Administration (Projektteam) — inkl. Konfigurationszugriff auf alle Fachbereichsseiten.</p>
+          <p data-en style="display:none">Visible to the Administration role (project team) — includes configuration access to all department pages.</p>
+        </div>
+
+        <div class="admin-grid">
+          <div class="admin-card">
+            <div class="a-icon">⇪</div>
+            <h4 data-de>Datenimport</h4><h4 data-en>Data import</h4>
+            <p data-de>Manueller Upload (CSV/XLSX) als Übergangslösung</p>
+            <p data-en>Manual upload (CSV/XLSX) as interim solution</p>
+            <span class="status-dot" data-de>Letzter Import: heute</span>
+            <span class="status-dot" data-en>Last import: today</span>
+          </div>
+          <div class="admin-card">
+            <div class="a-icon">⇄</div>
+            <h4 data-de>API-Schnittstellen</h4><h4 data-en>API connections</h4>
+            <p data-de>Verbindungsstatus & Token-Verwaltung</p>
+            <p data-en>Connection status & token management</p>
+            <span class="status-dot" data-de>3 aktiv</span>
+            <span class="status-dot" data-en>3 active</span>
+          </div>
+          <div class="admin-card">
+            <div class="a-icon">▣</div>
+            <h4 data-de>ERP-Anbindung</h4><h4 data-en>ERP connection</h4>
+            <p data-de>Verbindung zu SAP/Dynamics o. Ä.</p>
+            <p data-en>Connection to SAP/Dynamics etc.</p>
+            <span class="status-dot off" data-de>Nicht verbunden</span>
+            <span class="status-dot off" data-en>Not connected</span>
+          </div>
+          <div class="admin-card">
+            <div class="a-icon">◔</div>
+            <h4 data-de>Aktualisierungsintervall</h4><h4 data-en>Refresh interval</h4>
+            <p data-de>Automatischer Sync, z. B. täglich 06:00 Uhr</p>
+            <p data-en>Automatic sync, e.g. daily at 6:00 AM</p>
+            <span class="status-dot" data-de>Täglich, 06:00</span>
+            <span class="status-dot" data-en>Daily, 6:00 AM</span>
+          </div>
+          <div class="admin-card">
+            <div class="a-icon">☰</div>
+            <h4 data-de>Audit-Log</h4><h4 data-en>Audit log</h4>
+            <p data-de>Protokoll: wer hat wann welche Daten gesehen/exportiert</p>
+            <p data-en>Log of who viewed/exported which data, and when</p>
+            <span class="status-dot" data-de>Aktiv</span>
+            <span class="status-dot" data-en>Active</span>
+          </div>
+          <div class="admin-card">
+            <div class="a-icon">✓</div>
+            <h4 data-de>Datenqualitäts-Monitor</h4><h4 data-en>Data quality monitor</h4>
+            <p data-de>Warnung bei Duplikaten, Ausreißern, Importfehlern</p>
+            <p data-en>Alerts for duplicates, outliers, import errors</p>
+            <span class="status-dot" data-de>802 Duplikate · 524 Nullpreis-Zeilen</span>
+            <span class="status-dot" data-en>802 duplicates · 524 zero-price rows</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3><span data-de>Benutzer- & Rollenverwaltung — Rechtematrix</span><span data-en>User & role management — permission matrix</span></h3>
+          <table class="perm-table">
+            <tr>
+              <th data-de>Rolle</th><th data-en>Role</th>
+              <th data-de>Grundseite</th><th data-en>Home</th>
+              <th data-de>Finance</th><th data-en>Finance</th>
+              <th data-de>Marketing</th><th data-en>Marketing</th>
+              <th data-de>Retailer</th><th data-en>Retailer</th>
+              <th data-de>Admin</th><th data-en>Admin</th>
+            </tr>
+            <tr><td data-de>CEO / CFO</td><td data-en>CEO / CFO</td><td><span class="dot yes"></span></td><td><span class="dot yes"></span></td><td><span class="dot no"></span></td><td><span class="dot no"></span></td><td><span class="dot no"></span></td></tr>
+            <tr><td data-de>Marketing</td><td data-en>Marketing</td><td><span class="dot yes"></span></td><td><span class="dot no"></span></td><td><span class="dot yes"></span></td><td><span class="dot no"></span></td><td><span class="dot no"></span></td></tr>
+            <tr><td data-de>Retailer Connections</td><td data-en>Retailer Connections</td><td><span class="dot yes"></span></td><td><span class="dot no"></span></td><td><span class="dot no"></span></td><td><span class="dot yes"></span></td><td><span class="dot no"></span></td></tr>
+            <tr><td data-de>IT-Administration</td><td data-en>IT administration</td><td><span class="dot yes"></span></td><td><span class="dot no"></span></td><td><span class="dot no"></span></td><td><span class="dot no"></span></td><td><span class="dot yes"></span></td></tr>
+            <tr><td data-de>Mitarbeitende</td><td data-en>Employees</td><td><span class="dot yes"></span></td><td><span class="dot no"></span></td><td><span class="dot no"></span></td><td><span class="dot no"></span></td><td><span class="dot no"></span></td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ VIEW: BUSINESS OPERATIONS (GEPLANT) ============ -->
+      <section class="view" id="view-bizops">
+        <div class="page-head">
+          <h1 data-de>Business Operations</h1><h1 data-en style="display:none">Business Operations</h1>
+          <p data-de>GuV-orientierte Steuerungskennzahlen — geplante Erweiterung, nicht Teil des aktuellen Projektumfangs.</p>
+          <p data-en style="display:none">P&L-oriented management metrics — planned extension, not part of the current project scope.</p>
+        </div>
+
+        <div class="roadmap-banner">
+          <span>◈</span>
+          <span data-de><b>Roadmap-Vorschau.</b> Diese Seite ist nach Projektabschluss als nächster Ausbauschritt vorgesehen (ggf. ergänzt um eine eigene Vertriebs-Seite). Die gezeigten Kennzahlen und Formeln sind bereits validiert, aber noch nicht in Looker Studio umgesetzt.</span>
+          <span data-en style="display:none"><b>Roadmap preview.</b> This page is planned as the next extension step after project completion (possibly alongside a dedicated Sales page). The metrics and formulas shown are already validated but not yet built in Looker Studio.</span>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Rohertrag (EBIT, vereinfacht)</div><div class="kpi-label" data-en>Gross profit (EBIT, simplified)</div>
+            <div class="kpi-value">527,7 Mio. €</div>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-de>Netto-Umsatz − Gesamtkosten</span>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-en>Net revenue − total cost</span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Gewinnmarge</div><div class="kpi-label" data-en>Profit margin</div>
+            <div class="kpi-value">42,2%</div>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-de>Rohertrag / Netto-Umsatz</span>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-en>Gross profit / net revenue</span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Aufschlagsfaktor</div><div class="kpi-label" data-en>Markup factor</div>
+            <div class="kpi-value">1,73×</div>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-de>Netto-Umsatz / Gesamtkosten</span>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-en>Net revenue / total cost</span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label" data-de>Umsatzeffizienz (Kosten-Nutzen)</div><div class="kpi-label" data-en>Revenue efficiency (cost-to-revenue)</div>
+            <div class="kpi-value">0,58</div>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-de>Gesamtkosten / Netto-Umsatz</span>
+            <span class="badge" style="color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)" data-en>Total cost / net revenue</span>
+          </div>
+        </div>
+
+        <div class="panel-row">
+          <div class="panel">
+            <h3><span data-de>Umsatz pro Vertriebs-/Kosteneinheit</span><span data-en>Revenue per sales/cost unit</span></h3>
+            <table>
+              <tr><th data-de>Kennzahl</th><th data-en>Metric</th><th data-de>Formel</th><th data-en>Formula</th><th data-de>Wert</th><th data-en>Value</th></tr>
+              <tr><td data-de>Umsatz pro Händler</td><td data-en>Revenue per retailer</td><td class="mono" data-de>Netto-Umsatz / aktive Händler</td><td class="mono" data-en>Net revenue / active retailers</td><td class="mono">4,33 Mio. €</td></tr>
+              <tr><td data-de>Umsatz pro Mitarbeiter</td><td data-en>Revenue per employee</td><td class="mono" data-de>Netto-Umsatz / Mitarbeiteranzahl</td><td class="mono" data-en>Net revenue / headcount</td><td><span class="badge" style="color:var(--locked);background:var(--locked-soft);border-left-color:var(--locked)" data-de>Datenquelle fehlt</span><span class="badge" style="color:var(--locked);background:var(--locked-soft);border-left-color:var(--locked)" data-en>Data source missing</span></td></tr>
+            </table>
+            <div class="chart-note" data-de>Umsatz pro Mitarbeiter erfordert Personal-/Headcount-Daten, die im aktuellen Datenmodell (retailers, products, daily_sales, methods) nicht vorhanden sind — offene Datenlücke.</div>
+            <div class="chart-note" data-en>Revenue per employee requires headcount data, which is not present in the current data model (retailers, products, daily_sales, methods) — open data gap.</div>
+          </div>
+          <div class="panel">
+            <h3><span data-de>Vereinfachungs-Hinweis GuV</span><span data-en>P&L simplification note</span></h3>
+            <p style="font-size:12.5px;color:var(--text-2);line-height:1.6;" data-de>Die Rohdaten enthalten außer den Produktkosten (unit_cost) keine weiteren Aufwandspositionen (Personal, Miete, Marketing, Vertrieb, Zinsen). Rohertrag und EBIT/Gewinn vor Steuer sind daher rechnerisch identisch — eine bewusste, dokumentierte Vereinfachung unter der Annahme "keine Kredite/Fremdkapital", nicht eine vollständige Gewinn- und Verlustrechnung.</p>
+            <p style="font-size:12.5px;color:var(--text-2);line-height:1.6;display:none;" data-en>Besides product cost (unit_cost), the raw data contains no further expense categories (personnel, rent, marketing, sales, interest). Gross profit and EBIT/pre-tax profit are therefore numerically identical — a deliberate, documented simplification under the "no loans/debt" assumption, not a complete profit-and-loss statement.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEGEND -->
+      <div class="legend">
+        <div class="lg-item"><span class="lg-dot" style="background:var(--positive)"></span><span data-de>Positive Kennzahl (▲ + Vorzeichen, nicht nur Farbe — barrierefrei)</span><span data-en>Positive metric (▲ + sign, not color alone — accessible)</span></div>
+        <div class="lg-item"><span class="lg-dot" style="background:var(--negative)"></span><span data-de>Negative Kennzahl (▼ + Vorzeichen)</span><span data-en>Negative metric (▼ + sign)</span></div>
+        <div class="lg-item"><span class="lg-dot" style="background:var(--locked)"></span><span data-de>Gesperrt / fehlende Berechtigung oder Datenquelle</span><span data-en>Locked / missing permission or data source</span></div>
+        <div class="lg-item"><span class="lg-dot" style="background:var(--admin)"></span><span data-de>Systembereich (nur IT)</span><span data-en>System area (IT only)</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const perms = {
+    ceo: ['finance'],
+    marketing: ['marketing'],
+    retailer: ['retailer'],
+    admin: ['finance','marketing','retailer','admin'],
+    mitarbeiter: []
+  };
+
+  function setRole(role, el){
+    document.body.setAttribute('data-role', role);
+    document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.role-btn').forEach(b=>{
+      if(b.getAttribute('onclick').includes("'"+role+"'")) b.classList.add('active');
+    });
+    applyPermissions();
+  }
+
+  function applyPermissions(){
+    const role = document.body.getAttribute('data-role');
+    const allowed = perms[role] || [];
+    document.querySelectorAll('.nav-item[data-requires]').forEach(item=>{
+      const req = item.getAttribute('data-requires');
+      if(allowed.includes(req)){ item.classList.remove('locked'); item.querySelector('.nav-lock').textContent='🔓'; item.querySelector('.nav-lock').style.color='#1E5631'; }
+      else { item.classList.add('locked'); item.querySelector('.nav-lock').textContent='🔒'; item.querySelector('.nav-lock').style.color=''; }
+    });
+    document.querySelectorAll('.tile[data-req]').forEach(tile=>{
+      const req = tile.getAttribute('data-req');
+      if(allowed.includes(req)){ tile.classList.remove('locked'); tile.querySelector('.t-lock').textContent='🔓'; tile.querySelector('.t-lock').style.color='#1E5631'; }
+      else { tile.classList.add('locked'); tile.querySelector('.t-lock').textContent='🔒'; tile.querySelector('.t-lock').style.color=''; }
+    });
+  }
+
+  function goto(view){
+    const role = document.body.getAttribute('data-role');
+    const allowed = perms[role] || [];
+    if(view !== 'grund' && view !== 'bizops' && !allowed.includes(view)){
+      alert(document.body.classList.contains('lang-en')
+        ? 'Access denied — this role has no permission for this area.'
+        : 'Zugriff verweigert — diese Rolle hat keine Berechtigung für diesen Bereich.');
+      return;
+    }
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+view).classList.add('active');
+    document.querySelectorAll('.nav-item[data-goto]').forEach(n=>n.classList.remove('active'));
+    document.querySelectorAll('.nav-item[data-goto="'+view+'"]').forEach(n=>n.classList.add('active'));
+    const names = {grund:['Grundseite','Home'], finance:['Finance / CEO','Finance / CEO'], marketing:['Marketing','Marketing'], retailer:['Retailer Connections','Retailer Connections'], admin:['Administration','Administration'], bizops:['Business Operations (geplant)','Business Operations (planned)']};
+    document.getElementById('crumb-current').textContent = names[view][0];
+    document.getElementById('crumb-current-en').textContent = names[view][1];
+  }
+
+  function setLang(lang){
+    document.body.classList.toggle('lang-en', lang==='en');
+    document.getElementById('btn-de').classList.toggle('active', lang==='de');
+    document.getElementById('btn-en').classList.toggle('active', lang==='en');
+    document.querySelectorAll('.role-picker [data-en]').forEach(el=>{ el.style.display = lang==='en' ? 'inline-block' : 'none'; });
+    document.querySelectorAll('.role-picker [data-de]').forEach(el=>{ el.style.display = lang==='en' ? 'none' : 'inline-block'; });
+    const activeRole = document.querySelector('.role-btn.active');
+    document.getElementById('crumb-current').style.display = lang==='en' ? 'none':'inline';
+    document.getElementById('crumb-current-en').style.display = lang==='en' ? 'inline':'none';
+  }
+
+  applyPermissions();
+</script>
+</body>
+</html>
