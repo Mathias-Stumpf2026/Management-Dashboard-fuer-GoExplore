@@ -2,7 +2,7 @@
 # GoExplore Markterschließung — Umsatzprognose neuer Länder mittels BIP-Skalierung (BigQuery & Looker Studio)
 <img width="861" height="435" alt="image" src="https://github.com/user-attachments/assets/c3523dd8-65fa-4686-9a5b-e7030bb8f9b0" />
 
-![Finance/CEO Dashboard](2.Images/finance_ceo_dashboard.png)
+![Finance/CEO Dashboard](Images 4/finance_ceo_dashboard.png)
 
 Management-Dashboard für **GoExplore** (internationaler Einzelhändler für Camping-, Golf- und Outdoor-Ausrüstung) zur zentralen Frage der Geschäftsleitung: **Lohnt sich der Markteintritt in Polen, Norwegen, Tschechien und Portugal — und wie stellen wir sicher, dass CEO und Fachbereiche das jederzeit selbst nachvollziehen können, ohne für jede Frage eine neue Excel-Auswertung zu brauchen?**
 
