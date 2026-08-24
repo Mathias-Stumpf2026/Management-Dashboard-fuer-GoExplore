@@ -1,5 +1,6 @@
 # Management-Dashboard-fuer-GoExplore
 # GoExplore Markterschließung — Umsatzprognose neuer Länder mittels BIP-Skalierung (BigQuery & Looker Studio)
+<img width="861" height="435" alt="image" src="https://github.com/user-attachments/assets/c3523dd8-65fa-4686-9a5b-e7030bb8f9b0" />
 
 ![Finance/CEO Dashboard](2.Images/finance_ceo_dashboard.png)
 
