@@ -6,7 +6,7 @@
 
 Management-Dashboard für **GoExplore** (internationaler Einzelhändler für Camping-, Golf- und Outdoor-Ausrüstung) zur zentralen Frage der Geschäftsleitung: **Lohnt sich der Markteintritt in Polen, Norwegen, Tschechien und Portugal — und wie stellen wir sicher, dass CEO und Fachbereiche das jederzeit selbst nachvollziehen können, ohne für jede Frage eine neue Excel-Auswertung zu brauchen?**
 
-📊 [Präsentation](Projekt/GoExplore_Presentation.pptx) · 📄 [Pflichtenheft](4.Pflichtenheft/) · 🧩 [SQL-Views](3.SQL/) · 🖥️ [Interaktives Mockup](6.Mockup/)
+📊 ![Präsentation](Projekt/GoExplore_Presentation.pptx) · 📄 [Pflichtenheft](4.Pflichtenheft/) · 🧩 [SQL-Views](3.SQL/) · 🖥️ [Interaktives Mockup](6.Mockup/)
 
 Dieses Projekt entstand als Gruppenarbeit (Team: Zubaida, Tim, Mathias) im Rahmen des WBS-Kurses Data Science & AI; dieses Repository dokumentiert die gemeinsame Ausarbeitung.
 
